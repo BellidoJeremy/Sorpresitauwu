@@ -113,4 +113,21 @@ body {
   button:hover {
     background-color: #ff3f31;
   }
+
   
+  .footer {
+    background-color: #ff6f61;
+    color: #fff;
+    text-align: center;
+    padding: 15px 0;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    font-size: 1rem;
+    border-radius: 0 0 15px 15px;
+}
+
+.footer p {
+    margin: 0;
+}
