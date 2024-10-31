@@ -1,45 +1,56 @@
-// welcome.js
+document.addEventListener("DOMContentLoaded", function() {
 
-const targetDates = [
-  new Date('2024-08-11T00:00:00').getTime(),
-  new Date('2024-11-09T00:00:00').getTime(),
-  new Date('2024-12-17T00:00:00').getTime(),
-];
+  const targetDates = [
+    new Date('2024-08-11T00:00:00').getTime(), 
+    new Date('2024-11-09T00:00:00').getTime(), 
+    new Date('2024-12-17T00:00:00').getTime(), 
+  ];
 
-function showButton(index) {
-  document.getElementById(`button${index + 1}`).classList.remove('hidden');
-  document.getElementById(`countdown${index + 1}`).classList.add('hidden'); // Ocultar el contador
-  document.getElementById(`title${index + 1}`).classList.add('hidden'); // Ocultar el h2
-}
+  const titles = [
+    "Galería de fotos",
+    "Sorpresa especial",
+    "Otra sorpresa"
+  ];
 
-function updateCountdown(targetDate, ids, index) {
-  const now = new Date().getTime();
-  const distance = targetDate - now;
+  function showButton(index) {
+    const buttonContainer = document.getElementById(`button-container${index + 1}`);
+    const countdown = document.getElementById(`countdown${index + 1}`);
+    const title = document.getElementById(`title${index + 1}`);
 
-  if (distance < 0) {
-    showButton(index);
-    document.getElementById(ids.days).innerText = '00';
-    document.getElementById(ids.hours).innerText = '00';
-    document.getElementById(ids.minutes).innerText = '00';
-    document.getElementById(ids.seconds).innerText = '00';
-    return;
+    title.innerText = titles[index];
+    countdown.classList.add('hidden');
+    buttonContainer.classList.remove('hidden');
   }
 
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  function updateCountdown(targetDate, ids, index) {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
 
-  document.getElementById(ids.days).innerText = days;
-  document.getElementById(ids.hours).innerText = hours;
-  document.getElementById(ids.minutes).innerText = minutes;
-  document.getElementById(ids.seconds).innerText = seconds;
-}
+    if (distance <= 0) {
+      showButton(index);
+    } else {
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-function updateAllCountdowns() {
-  updateCountdown(targetDates[0], {days: 'days1', hours: 'hours1', minutes: 'minutes1', seconds: 'seconds1'}, 0);
-  updateCountdown(targetDates[1], {days: 'days2', hours: 'hours2', minutes: 'minutes2', seconds: 'seconds2'}, 1);
-  updateCountdown(targetDates[2], {days: 'days3', hours: 'hours3', minutes: 'minutes3', seconds: 'seconds3'}, 2);
-}
+      document.getElementById(ids.days).innerText = days < 10 ? '0' + days : days; 
+      document.getElementById(ids.hours).innerText = hours < 10 ? '0' + hours : hours;
+      document.getElementById(ids.minutes).innerText = minutes < 10 ? '0' + minutes : minutes;
+      document.getElementById(ids.seconds).innerText = seconds < 10 ? '0' + seconds : seconds;
+    }
+  }
 
-setInterval(updateAllCountdowns, 1000);
+  function updateAllCountdowns() {
+    targetDates.forEach((date, index) => {
+      updateCountdown(date, {
+        days: `days${index + 1}`,
+        hours: `hours${index + 1}`,
+        minutes: `minutes${index + 1}`,
+        seconds: `seconds${index + 1}`
+      }, index);
+    });
+  }
+
+  setInterval(updateAllCountdowns, 1000);
+});
